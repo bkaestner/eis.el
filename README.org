@@ -1,3 +1,20 @@
 #+TITLE: Emacs Introspection System
 
 This package provides an alternative to the overviews of =describe-variable='s, =describe-defun='s and =describe-face='s completing read menu.
+* Motivation
+Back in Feburary 2022, a fellow Emacs user asked the following question:
+#+begin_quote
+How do I check currently used elements in Emacs?
+As in, what's the currently used font, frame settings, colours, language, system, etc etc?
+#+end_quote
+A mixture of [[https://xkcd.com/356/][XKCD:356]] and [[https://xkcd.com/456/][XKCD:456]] later, here's the *Emacs Introspection System*, a collection of major modes based on ~tabulated-list-mode~.
+
+* Usage
+Install the package and then use  ~eis-show-faces~, ~eis-show-fonts~, ~eis-show-functions~ or  ~eis-show-variables~.
+
+* Screenshots
+~eis-show-functions~ and ~eis-show-variables~ (using ~modus-vivendi~):
+[[file:assets/screenshot-functions-variables.png]]
+
+~eis-show-faces~ and ~eis-show-fonts~ (using ~modus-operandi~):
+[[file:assets/screenshot-faces-fonts.png]]
