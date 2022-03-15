@@ -1,0 +1,3 @@
+#+TITLE: Emacs Introspection System
+
+This package provides an alternative to the overviews of =describe-variable='s, =describe-defun='s and =describe-face='s completing read menu.
