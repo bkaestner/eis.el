@@ -2,7 +2,7 @@
 
 This package provides an alternative to the overviews of =describe-variable='s, =describe-defun='s and =describe-face='s completing read menu.
 * Motivation
-Back in Feburary 2022, a fellow Emacs user asked the following question:
+Back in Feburary 2022, a fellow Emacs user [[https://github.com/INFU-AV][(Infu)]] asked the following question:
 #+begin_quote
 How do I check currently used elements in Emacs?
 As in, what's the currently used font, frame settings, colours, language, system, etc etc?
