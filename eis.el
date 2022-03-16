@@ -5,7 +5,7 @@
 
 ;; Author:  Benjamin Kästner
 ;; Keywords: internal, convenience
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Homepage: https://github.com/bkaestner/eis.el
 ;; Package-Requires: ((emacs "25.1"))
 
@@ -75,6 +75,18 @@
   :type `(choice (const :tag "ASCII sample" ,eis--text-sample-ascii)
                  string))
 
+(defcustom eis-font-filter 'all
+  "Filter for fonts on your system.
+
+It can be either the symbol `all' for all fonts, `monospace' for
+monospaced fonts, or a custom filter. The custom filter must take
+a single argument (the font name) and return non-nil on fonts
+that should be shown."
+  :group 'eis
+  :type '(choice (const :tag "All fonts" all)
+                 (const :tag "Monospaced fonts" monospace)
+                 function))
+
 (defcustom eis-variable-scope-buffer-local-handling 'diff
   "How to handle `buffer-local-variables'."
   :group 'eis
@@ -139,8 +151,9 @@ The former shall be a function, the latter a list."
 (defun eis--buffer-aware-describe-variable (scope sym)
   "Describe SYM in the context of SCOPE.
 
-If SCOPE is '(buffer b), then SYM will be described as `b' was currently visited.
-Otherwise it will be described in the context of the current buffer."
+If SCOPE is '(buffer b), then SYM will be described as if `b' was
+currently visited. Otherwise it will be described in the context
+of the current buffer."
   (pcase scope
     (`(buffer ,b) (with-current-buffer b (funcall eis-describe-variable-function sym)))
     (_ (funcall eis-describe-variable-function sym))))
@@ -385,10 +398,16 @@ and differs from the current one."
     :columns [("Font" 40 t)
               ("Sample" 65 nil)]
     :sort-column "Font"
-    (cl-loop for font in (cl-remove-duplicates (font-family-list))
-             collect `(,font
-                       [,font
-                        (,eis-text-sample . (face (:inherit default :family ,font)))]))))
+    (let ((fonts (pcase eis-font-filter
+                   ('all (font-family-list))
+                   ('monospace (mapcar (lambda (fe)
+                                         (symbol-name (font-get fe :family)))
+                                       (list-fonts (font-spec :spacing 100))))
+                   (f (seq-filter f (font-family-list))))))
+      (cl-loop for font in (cl-remove-duplicates fonts)
+               collect `(,font
+                         [,font
+                          (,eis-text-sample . (face (:inherit default :family ,font)))])))))
 
 (provide 'eis)
 ;;; eis.el ends here
